@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:defaultValue="120"
+        android:dialogTitle="@string/pref_num_target"
+        android:inputType="number"
+        android:key="pref_num_target"
+        android:summary="This allows you to enter a string"
+        android:title="@string/pref_num_target" />
+</PreferenceScreen>
