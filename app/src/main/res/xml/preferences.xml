@@ -5,6 +5,13 @@
         android:dialogTitle="@string/pref_num_target"
         android:inputType="number"
         android:key="pref_num_target"
-        android:summary="This allows you to enter a string"
+        android:summary="aaa %s"
+        android:title="@string/pref_num_target" />
+    <EditTextPreference
+        android:defaultValue="121"
+        android:dialogTitle="@string/pref_num_target"
+        android:inputType="number"
+        android:key="pref_num_target2"
+        android:summary="aa %s"
         android:title="@string/pref_num_target" />
 </PreferenceScreen>
