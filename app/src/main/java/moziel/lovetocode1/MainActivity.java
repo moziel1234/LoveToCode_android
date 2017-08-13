@@ -4,15 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.DigitsKeyListener;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,15 +44,26 @@ public class MainActivity extends AppCompatActivity {
 
 
         target.setText(preferences.getString("pref_num_target", "0"));
+        Handler mHandler= new Handler();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mHandler.post(
+                new Runnable()
+                {
+                    public void run()
+                    {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                        EditText editText = (EditText) findViewById(R.id.editText);
+                        editText.setFocusableInTouchMode(true);
+                        editText.requestFocus();
+
+                    }
+                }
+        );
+
+
+
+
     }
 
     @Override
@@ -73,4 +89,25 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Handler mHandler= new Handler();
+
+        mHandler.post(
+                new Runnable()
+                {
+                    public void run()
+                    {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                        EditText editText = (EditText) findViewById(R.id.editText);
+                        editText.setFocusableInTouchMode(true);
+                        editText.requestFocus();
+                    }
+                }
+        );
+    }
+
 }

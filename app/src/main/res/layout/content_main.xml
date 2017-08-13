@@ -27,6 +27,12 @@
             android:text=""
             android:background="@drawable/back"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="9"
+            android:background="@android:color/transparent"/>
     </LinearLayout>
 </RelativeLayout>
