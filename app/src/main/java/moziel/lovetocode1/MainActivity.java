@@ -23,11 +23,18 @@ import android.widget.TextView;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
+        char[] chars = {'+', '-', '*', '/'};
+        int[] eqArray = {1,2,4,5,7};
+        Log.d("mosh", Calc.permute(chars, eqArray , 1));
+        */
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,6 +102,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayText(Editable text) {
         CharSequence temp = text.toString();
+        char[] chars = {'+', '-', '*', '/'};
+        int[] eqArray = new int[temp.length()];
+        for(int i = 0 ; i < temp.length() ; i++){
+            eqArray[i] = Integer.parseInt(temp.subSequence(i,i+1).toString());
+        }
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String res = Calc.permute(chars, eqArray , Integer.parseInt(preferences.getString("pref_num_target", "0")));
+
         View linearLayout =  findViewById(R.id.equation);
         if(((LinearLayout) linearLayout).getChildCount() > 0)
             ((LinearLayout) linearLayout).removeAllViews();
@@ -112,7 +128,11 @@ public class MainActivity extends AppCompatActivity {
             ((LinearLayout) linearLayout).addView(valueTV);
             if (temp.length()>1 && i<temp.length()-1) {
                 TextView actionTV = new TextView(this);
-                actionTV.setText("?");
+                if (res.equals("")) {
+                    actionTV.setText("?");
+                } else {
+                    actionTV.setText(String.valueOf(res.charAt(i)));
+                }
                 actionTV.setPadding(2,1,2,1);
                 actionTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP,25);
                 actionTV.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
