@@ -23,6 +23,15 @@
             android:layout_width="wrap_content"
             android:id="@+id/equation"
             android:layout_height="wrap_content"
+            android:background="@drawable/arrow"
+            android:orientation="horizontal">
+        </LinearLayout>
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:id="@+id/equation2"
+            android:layout_height="wrap_content"
+            android:background="@drawable/arrow2"
             android:orientation="horizontal">
         </LinearLayout>
         <TextView
@@ -31,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text=""
+            android:textSize="32dp"
             android:background="@drawable/back"
             android:textAppearance="?android:attr/textAppearanceMedium" />
         <EditText

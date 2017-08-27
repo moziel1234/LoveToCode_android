@@ -57,7 +57,11 @@ public class MainActivity extends AppCompatActivity {
         target.setText(preferences.getString("pref_num_target", "0"));
         final EditText editText = (EditText) findViewById(R.id.editText);
 
+        View linearLayoutLeftToRight =  findViewById(R.id.equation);
+        View linearLayoutRightToLeft =  findViewById(R.id.equation2);
 
+        linearLayoutLeftToRight.getBackground().setAlpha(40);
+        linearLayoutRightToLeft.getBackground().setAlpha(40);
 
         editText.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -100,20 +104,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void displayText(Editable text) {
-        CharSequence temp = text.toString();
-        char[] chars = {'+', '-', '*', '/'};
-        int[] eqArray = new int[temp.length()];
-        for(int i = 0 ; i < temp.length() ; i++){
-            eqArray[i] = Integer.parseInt(temp.subSequence(i,i+1).toString());
-        }
+    private void handleEqation(LinearLayout linearLayout, CharSequence temp, String res) {
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String res = Calc.permute(chars, eqArray , Integer.parseInt(preferences.getString("pref_num_target", "0")));
-
-        View linearLayout =  findViewById(R.id.equation);
-        if(((LinearLayout) linearLayout).getChildCount() > 0)
-            ((LinearLayout) linearLayout).removeAllViews();
+        if(linearLayout.getChildCount() > 0)
+            linearLayout.removeAllViews();
 
         for (int i=0; i< temp.length(); i++) {
             TextView valueTV = new TextView(this);
@@ -136,9 +130,30 @@ public class MainActivity extends AppCompatActivity {
                 actionTV.setPadding(2,1,2,1);
                 actionTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP,25);
                 actionTV.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
-                ((LinearLayout) linearLayout).addView(actionTV);
+                linearLayout.addView(actionTV);
             }
         }
+    }
+
+    private void displayText(Editable text) {
+        CharSequence temp = text.toString();
+        char[] chars = {'+', '-', '*', '/'};
+        int[] eqArray = new int[temp.length()];
+        int[] eqArray2 = new int[temp.length()];
+        for(int i = 0 ; i < temp.length() ; i++){
+            eqArray[i] = Integer.parseInt(temp.subSequence(i,i+1).toString());
+            eqArray2[temp.length()-1-i] = Integer.parseInt(temp.subSequence(i,i+1).toString());
+        }
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String res = Calc.permute(chars, eqArray , Integer.parseInt(preferences.getString("pref_num_target", "0")));
+        String res2 = Calc.permute(chars, eqArray2 , Integer.parseInt(preferences.getString("pref_num_target", "0")));
+
+        View linearLayoutLeftToRight =  findViewById(R.id.equation);
+        View linearLayoutRightToLeft =  findViewById(R.id.equation2);
+        handleEqation((LinearLayout) linearLayoutLeftToRight, temp, res);
+        handleEqation((LinearLayout) linearLayoutRightToLeft, new StringBuilder(temp).reverse().toString(), res2);
+
     }
 
     @Override
