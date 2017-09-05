@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                 if (key.equals("pref_num_target")) {
                     TextView target = (TextView)findViewById(R.id.text_target);
-                    target.setText(prefs.getString("pref_num_target", "0"));
+                    target.setText(prefs.getString("pref_num_target", "120"));
                 }
             }
         };
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         preferences.registerOnSharedPreferenceChangeListener(listener);
 
 
-        target.setText(preferences.getString("pref_num_target", "0"));
+        target.setText(preferences.getString("pref_num_target", "120"));
         final EditText editText = (EditText) findViewById(R.id.editText);
 
         View linearLayoutLeftToRight =  findViewById(R.id.equation);
@@ -89,10 +89,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-
-
-
-
     }
 
 
@@ -146,13 +142,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String res = Calc.permute(chars, eqArray , Integer.parseInt(preferences.getString("pref_num_target", "0")));
-        String res2 = Calc.permute(chars, eqArray2 , Integer.parseInt(preferences.getString("pref_num_target", "0")));
+        String res = Calc.permute(chars, eqArray , Integer.parseInt(preferences.getString("pref_num_target", "120")));
+        String res2 = Calc.permute(chars, eqArray2 , Integer.parseInt(preferences.getString("pref_num_target", "120")));
 
         View linearLayoutLeftToRight =  findViewById(R.id.equation);
         View linearLayoutRightToLeft =  findViewById(R.id.equation2);
         handleEqation((LinearLayout) linearLayoutLeftToRight, temp, res);
-        handleEqation((LinearLayout) linearLayoutRightToLeft, new StringBuilder(temp).reverse().toString(), res2);
+        handleEqation((LinearLayout) linearLayoutRightToLeft, temp, new StringBuilder(res2).reverse().toString());
+        // handleEqation((LinearLayout) linearLayoutRightToLeft, new StringBuilder(temp).reverse().toString(), res2);
 
     }
 
