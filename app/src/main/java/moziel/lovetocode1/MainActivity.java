@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
@@ -100,24 +101,56 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void handleEqation(LinearLayout linearLayout, CharSequence temp, String res) {
+    private void handleEqation(RelativeLayout relativeLayout, TextView textViewToSeeFirst, CharSequence temp, String res, boolean isLeft) {
 
-        if(linearLayout.getChildCount() > 0)
-            linearLayout.removeAllViews();
+        /*
+        if(relativeLayout.getChildCount() > 0)
+            relativeLayout.removeAllViews();
+        */
+        int l = relativeLayout.getChildCount();
+        for (int i=l-1; i> 0; i--) {
+            relativeLayout.removeViewAt(i);
 
+        }
+
+        int numberOfTextViews = 1;
+        TextView[] textViewArray = new TextView[20];
+
+        textViewArray[numberOfTextViews - 1] = textViewToSeeFirst;
         for (int i=0; i< temp.length(); i++) {
-            TextView valueTV = new TextView(this);
+            RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams
+                    (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            if (isLeft) {
+                lparams.addRule(RelativeLayout.LEFT_OF, textViewArray[numberOfTextViews - 1].getId());
+            } else {
+                lparams.addRule(RelativeLayout.RIGHT_OF, textViewArray[numberOfTextViews - 1].getId());
+            }
+            lparams.addRule(RelativeLayout.ALIGN_TOP, textViewArray[numberOfTextViews - 1].getId());
+
+            TextView valueTV = new TextView(MainActivity.this);
             valueTV.setText(temp.subSequence(i,i+1));
             valueTV.setPadding(2,1,2,1);
             valueTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP,35);
-            valueTV.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
             GradientDrawable border = new GradientDrawable();
             border.setColor(0xFFFFFFFF); //white background
             border.setStroke(1, 0xFF000000); //black border with full opacity
             valueTV.setBackgroundDrawable(border);
-            ((LinearLayout) linearLayout).addView(valueTV);
+            valueTV.setId(numberOfTextViews);
+            textViewArray[numberOfTextViews] = valueTV;
+            relativeLayout.addView(textViewArray[numberOfTextViews], lparams);
+            numberOfTextViews = numberOfTextViews + 1;
+
+            lparams = new RelativeLayout.LayoutParams
+                    (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            if (isLeft) {
+                lparams.addRule(RelativeLayout.LEFT_OF, textViewArray[numberOfTextViews - 1].getId());
+            } else {
+                lparams.addRule(RelativeLayout.RIGHT_OF, textViewArray[numberOfTextViews - 1].getId());
+            }
+            lparams.addRule(RelativeLayout.ALIGN_TOP, textViewArray[numberOfTextViews - 1].getId());
+
             if (temp.length()>1 && i<temp.length()-1) {
-                TextView actionTV = new TextView(this);
+                TextView actionTV = new TextView(MainActivity.this);
                 if (res.equals("")) {
                     actionTV.setText("?");
                 } else {
@@ -125,9 +158,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 actionTV.setPadding(2,1,2,1);
                 actionTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP,25);
-                actionTV.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
-                linearLayout.addView(actionTV);
+                actionTV.setId(numberOfTextViews);
+                textViewArray[numberOfTextViews] = actionTV;
+                relativeLayout.addView(textViewArray[numberOfTextViews], lparams);
+                numberOfTextViews = numberOfTextViews + 1;
+
             }
+
         }
     }
 
@@ -145,10 +182,12 @@ public class MainActivity extends AppCompatActivity {
         String res = Calc.permute(chars, eqArray , Integer.parseInt(preferences.getString("pref_num_target", "120")));
         String res2 = Calc.permute(chars, eqArray2 , Integer.parseInt(preferences.getString("pref_num_target", "120")));
 
-        View linearLayoutLeftToRight =  findViewById(R.id.equation);
-        View linearLayoutRightToLeft =  findViewById(R.id.equation2);
-        handleEqation((LinearLayout) linearLayoutLeftToRight, temp, res);
-        handleEqation((LinearLayout) linearLayoutRightToLeft, temp, new StringBuilder(res2).reverse().toString());
+        View relativeLayoutLeftToRight =  findViewById(R.id.equation);
+        View relativeLayoutRightToLeft =  findViewById(R.id.equation2);
+        TextView textViewToSeeFirst = (TextView) findViewById(R.id.textViewEq1);
+        TextView textViewToSeeFirst2 = (TextView) findViewById(R.id.textViewEq2);
+        handleEqation((RelativeLayout) relativeLayoutLeftToRight, textViewToSeeFirst, temp, res, false);
+        handleEqation((RelativeLayout) relativeLayoutRightToLeft, textViewToSeeFirst2, new StringBuilder(temp).reverse().toString() , res2, true);
         // handleEqation((LinearLayout) linearLayoutRightToLeft, new StringBuilder(temp).reverse().toString(), res2);
 
     }

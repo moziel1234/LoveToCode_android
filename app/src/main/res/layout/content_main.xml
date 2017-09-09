@@ -17,22 +17,37 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="3dp">
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
+
+        <RelativeLayout
             android:id="@+id/equation"
-            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/arrow"
-            android:orientation="horizontal">
-        </LinearLayout>
-        <LinearLayout
+            android:layout_weight=".2" >
+
+            <TextView
+                android:id="@+id/textViewEq1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:id="@+id/equation2"
             android:layout_height="100dp"
-            android:background="@drawable/arrow2"
-            android:orientation="horizontal">
-        </LinearLayout>
+            android:background="@drawable/arrow2">
+
+            <TextView
+                android:id="@+id/textViewEq2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="" />
+        </RelativeLayout>
         <TextView
             android:id="@+id/text_target"
             android:layout_width="wrap_content"
